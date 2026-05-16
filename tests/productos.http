@@ -1,0 +1,42 @@
+### Variables
+@baseUrl = http://localhost:8000
+
+### 1. Crear una Categoría (Necesario para luego asignarla al producto)
+POST {{baseUrl}}/categorias/
+Content-Type: application/json
+
+{
+  "nombre": "Pizzas",
+  "descripcion": "Pizzas artesanales con masa fresca"
+}
+
+### 2. Crear un Producto (Asignándole el ID 1 de la categoría creada arriba)
+POST {{baseUrl}}/productos/
+Content-Type: application/json
+
+{
+  "nombre": "Margarita",
+  "descripcion": "Salsa de tomate, mozzarella y albahaca",
+  "precio_base": 8500.50,
+  "imagen_url": ["https://ejemplo.com/margarita.jpg"],
+  "disponible": true,
+  "categoria_ids": [1]
+}
+
+### 3. Obtener todos los productos
+GET {{baseUrl}}/productos/
+
+### 4. Obtener un producto por ID
+GET {{baseUrl}}/productos/1
+
+### 5. Actualizar un producto (Ej: cambiar el precio o el nombre)
+PUT {{baseUrl}}/productos/1
+Content-Type: application/json
+
+{
+  "nombre": "Margarita Especial",
+  "precio_base": 9000.00
+}
+
+### 6. Eliminar un producto
+DELETE {{baseUrl}}/productos/1

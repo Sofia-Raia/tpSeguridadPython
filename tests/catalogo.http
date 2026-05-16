@@ -1,0 +1,114 @@
+### Variables Globales
+@base_url = http://localhost:8000
+@producto_id = 1
+@categoria_id = 1
+@ingrediente_id = 1
+
+###############################################################################
+# MODULO: CATEGORÍAS
+###############################################################################
+
+### Listar Categorías
+GET {{base_url}}/categorias/
+Accept: application/json
+
+### Crear Categoría (Base para los productos)
+# @name crearCategoria
+POST {{base_url}}/categorias/
+Content-Type: application/json
+
+{
+    "nombre": "Picetas",
+    "descripcion": "Pizzas artesanales al horno de barro",
+    "imagen_url": "https://img.com/pizzas.jpg"
+}
+
+###############################################################################
+# MODULO: INGREDIENTES (Nuevo para el Parcial)
+###############################################################################
+
+### Crear Ingrediente 1 (Normal)
+POST {{base_url}}/ingredientes/
+Content-Type: application/json
+
+{
+    "nombre": "Muzzarella",
+    "descripcion": "Queso de vaca de alta calidad",
+    "es_alergeno": true
+}
+
+### Crear Ingrediente 2 (Alérgeno)
+POST {{base_url}}/ingredientes/
+Content-Type: application/json
+
+{
+    "nombre": "Albahaca",
+    "descripcion": "Hojas frescas de albahaca",
+    "es_alergeno": false
+}
+
+### Listar Ingredientes
+GET {{base_url}}/ingredientes/
+Accept: application/json
+
+###############################################################################
+# MODULO: PRODUCTOS (Con Paginación y Filtros)
+###############################################################################
+
+### Crear Producto (Relacionado con Categoría ID 1)
+# Aquí demostramos la relación N:M pasando los IDs
+POST {{base_url}}/productos/
+Content-Type: application/json
+
+{
+    "nombre": "Pizza Margarita",
+    "descripcion": "Clásica con tomate y muzzarella",
+    "precio_base": 8500.50,
+    "stock_cantidad": 20,
+    "disponible": true,
+    "categoria_ids": [1],
+    "imagen_url": ["https://img.com/margarita.jpg"]
+}
+
+### Listar con Paginación (Requerimiento Parcial: Annotated + Query)
+GET {{base_url}}/productos/?skip=0&limit=5
+Accept: application/json
+
+### Búsqueda por Nombre (Nuevo Filtro)
+GET {{base_url}}/productos/?nombre=Pizza
+Accept: application/json
+
+### Detalle de Producto Específico
+GET {{base_url}}/productos/{{producto_id}}
+Accept: application/json
+
+### Actualizar Producto (Cambiando stock y nombre)
+PUT {{base_url}}/productos/{{producto_id}}
+Content-Type: application/json
+
+{
+    "nombre": "Pizza Margarita Especial",
+    "stock_cantidad": 15
+}
+
+###############################################################################
+# SECCIÓN: VALIDACIONES Y ERRORES (Demo de Pydantic/HTTPException)
+###############################################################################
+
+### Error 1: Precio Negativo (Validación Pydantic gt=0)
+POST {{base_url}}/productos/
+Content-Type: application/json
+
+{
+    "nombre": "Pizza Error",
+    "precio_base": -100,
+    "categoria_ids": [1]
+}
+
+### Error 2: Producto No Existente (404 HTTPException)
+GET {{base_url}}/productos/9999
+Accept: application/json
+
+### Borrado Lógico (Soft Delete)
+# En la terminal verás que el 'deleted_at' se completa en la DB
+DELETE {{base_url}}/productos/{{producto_id}}
