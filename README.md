@@ -118,7 +118,7 @@ Volvé a hacer clic en Send.
 Resultado esperado: Código 401 Unauthorized indicando que la ruta está protegida y el acceso fue denegado con éxito.
 
 📂 Estructura Modular del Proyecto
-´´´
+  ```
 ProyectoIntegradorProg4-main/
 ├── venv/                       # Entorno virtual de Python
 ├── app/
@@ -143,4 +143,4 @@ ProyectoIntegradorProg4-main/
 │           └── router.py       # Endpoints públicos y protegidos (/register, /token, /me)
 ├── README.md                   # Documentación del proyecto
 └── requirements.txt            # Listado de dependencias
-´´´
+  
